@@ -1,8 +1,10 @@
 package com.thelastcodebenders.event_center_backend.models;
 
 import com.thelastcodebenders.event_center_backend.models.dto.UserResponse;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,6 +41,9 @@ public class User implements UserDetails {
     @Builder.Default private boolean enabled = true;
     @Builder.Default private boolean credentialsNonExpired = true;
     @Builder.Default private boolean emailVerified = false;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VendorEventCenter> eventCenters;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

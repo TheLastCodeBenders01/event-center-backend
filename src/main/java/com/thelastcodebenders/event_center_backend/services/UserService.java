@@ -2,8 +2,12 @@ package com.thelastcodebenders.event_center_backend.services;
 
 import com.thelastcodebenders.event_center_backend.exceptions.UserNotFoundException;
 import com.thelastcodebenders.event_center_backend.models.User;
+import com.thelastcodebenders.event_center_backend.models.dto.AppResponse;
+import com.thelastcodebenders.event_center_backend.models.dto.UserProfileRequest;
 import com.thelastcodebenders.event_center_backend.repositories.UserRepository;
+import com.thelastcodebenders.event_center_backend.utils.UserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -28,5 +32,21 @@ public class UserService {
 
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    public AppResponse updateUserDetails(UserProfileRequest userProfile) {
+        User user = UserUtil.getLoggedInUser();
+
+        if (!(userProfile.getPhoneNumber() == null) || !userProfile.getPhoneNumber().isEmpty()) {
+            user.setPhoneNumber(userProfile.getPhoneNumber());
+            user.setVendor(userProfile.isVendor());
+        }
+
+        saveUser(user);
+
+        return AppResponse.builder()
+                .message("User Profile Successfully updated")
+                .status(HttpStatus.OK)
+                .build();
     }
 }
