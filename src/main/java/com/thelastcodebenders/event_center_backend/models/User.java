@@ -3,6 +3,7 @@ package com.thelastcodebenders.event_center_backend.models;
 import com.thelastcodebenders.event_center_backend.models.dto.UserResponse;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -42,8 +43,11 @@ public class User implements UserDetails {
     @Builder.Default private boolean credentialsNonExpired = true;
     @Builder.Default private boolean emailVerified = false;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<VendorEventCenter> eventCenters;
+
+    @OneToMany(mappedBy = "bookedBy", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<EventCenterBooking> bookings;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

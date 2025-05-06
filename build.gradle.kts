@@ -26,6 +26,7 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework:spring-test")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")

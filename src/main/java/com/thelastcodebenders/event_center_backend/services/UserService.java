@@ -4,6 +4,7 @@ import com.thelastcodebenders.event_center_backend.exceptions.UserNotFoundExcept
 import com.thelastcodebenders.event_center_backend.models.User;
 import com.thelastcodebenders.event_center_backend.models.dto.AppResponse;
 import com.thelastcodebenders.event_center_backend.models.dto.UserProfileRequest;
+import com.thelastcodebenders.event_center_backend.models.dto.UserResponse;
 import com.thelastcodebenders.event_center_backend.repositories.UserRepository;
 import com.thelastcodebenders.event_center_backend.utils.UserUtil;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,19 @@ public class UserService {
         return AppResponse.builder()
                 .message("User Profile Successfully updated")
                 .status(HttpStatus.OK)
+                .build();
+    }
+
+    public UserResponse getLoggedInUser() {
+        User user = UserUtil.getLoggedInUser();
+
+        return UserResponse.builder()
+                .isVendor(user.isVendor())
+                .userId(user.getUserId())
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 }

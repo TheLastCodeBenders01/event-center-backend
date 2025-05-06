@@ -8,6 +8,6 @@ import lombok.Data;
 @Builder
 public class UserProfileRequest {
     private String phoneNumber;
-    @JsonProperty("is_vendor")
+    @JsonProperty("isVendor")
     private boolean isVendor;
 }
