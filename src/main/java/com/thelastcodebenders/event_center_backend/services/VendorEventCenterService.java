@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thelastcodebenders.event_center_backend.adapter.FileServiceAdapter;
 import com.thelastcodebenders.event_center_backend.exceptions.EventCenterNotFoundException;
+import com.thelastcodebenders.event_center_backend.exceptions.UnauthorizedException;
 import com.thelastcodebenders.event_center_backend.models.User;
 import com.thelastcodebenders.event_center_backend.models.VendorEventCenter;
 import com.thelastcodebenders.event_center_backend.models.dto.Address;
@@ -32,6 +33,10 @@ public class VendorEventCenterService {
     @Transactional
     public VendorEventCenter uploadEventCenter(EventCenterRequest request) throws JsonProcessingException {
         User user = UserUtil.getLoggedInUser();
+
+        if (user.isVendor()) {
+            throw new UnauthorizedException("You're not a vendor");
+        }
 
         AddressRequestDto address = objectMapper.readValue(request.getAddress(), AddressRequestDto.class);
 
