@@ -19,13 +19,13 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "update user profile")
+    @Operation(summary = "update user profile (authenticated)")
     @PutMapping
     public AppResponse updateUserDetails(@RequestBody UserProfileRequest userProfile) {
         return userService.updateUserDetails(userProfile);
     }
 
-    @Operation(summary = "get Llgged in user")
+    @Operation(summary = "get logged in user (authenticated)")
     @GetMapping("logged-in-user")
     public UserResponse getLoggedInUser() {
         return userService.getLoggedInUser();

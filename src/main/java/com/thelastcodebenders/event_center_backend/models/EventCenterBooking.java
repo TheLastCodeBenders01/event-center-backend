@@ -28,6 +28,7 @@ public class EventCenterBooking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private int id;
 
     private Instant bookingDate;

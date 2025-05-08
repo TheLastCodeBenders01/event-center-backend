@@ -27,7 +27,7 @@ public class EventCenterController {
 
     private final VendorEventCenterService vendorEventCenterService;
 
-    @Operation(summary = "upload event center", description = "The medias are not string they're actually supposed to be a list of files. While the address should be of the form {\"streetAddress\":\"Adegbaju\",\"country\":\"Nigeria\",\"state\":\"Lagos\"}")
+    @Operation(summary = "upload event center (authenticated)", description = "The medias are not string they're actually supposed to be a list of files. While the address should be of the form {\"streetAddress\":\"Adegbaju\",\"country\":\"Nigeria\",\"state\":\"Lagos\"}")
     @PostMapping
     public VendorEventCenter uploadEventCenter(@ModelAttribute EventCenterRequest request) throws JsonProcessingException {
         return vendorEventCenterService.uploadEventCenter(request);
@@ -47,7 +47,15 @@ public class EventCenterController {
         return vendorEventCenterService.findAllEventCenters(pageSize, pageNumber);
     }
 
-    @Operation(summary = "book event center", description = "endpoint for booking event center")
+    @Operation(summary = "(paginated endpoint) get all event centers", description = "the parameters are actually query parameters")
+    @GetMapping("search")
+    public List<VendorEventCenter> searchEventCenters(
+            @RequestParam("pageSize") int pageSize, @RequestParam("pageNumber") int pageNumber, @RequestParam("key") String key
+    ) {
+        return vendorEventCenterService.searchEventCenter(pageSize, pageNumber, key);
+    }
+
+    @Operation(summary = "book event center(authenticated)", description = "endpoint for booking event center")
     @PostMapping("book/{eventCenterId}")
     public AppResponse bookEventCenter(@PathVariable UUID eventCenterId, @RequestBody BookEventCenterRequest request) {
         return vendorEventCenterService.bookEventCenter(eventCenterId, request);

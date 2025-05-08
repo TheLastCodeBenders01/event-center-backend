@@ -15,11 +15,13 @@ import com.thelastcodebenders.event_center_backend.models.dto.BookEventCenterReq
 import com.thelastcodebenders.event_center_backend.models.dto.EventCenterRequest;
 import com.thelastcodebenders.event_center_backend.repositories.EventCenterBookingRepository;
 import com.thelastcodebenders.event_center_backend.repositories.VendorEventCenterRepository;
+import com.thelastcodebenders.event_center_backend.repositories.specifications.VendorEventCenterSpecification;
 import com.thelastcodebenders.event_center_backend.utils.UserUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -92,5 +94,11 @@ public class VendorEventCenterService {
                 .status(HttpStatus.OK)
                 .message("Event Center Booking Request Successfully Sent")
                 .build();
+    }
+
+    public List<VendorEventCenter> searchEventCenter(int pageSize, int pageNumber, String key) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Specification<VendorEventCenter> specification = VendorEventCenterSpecification.search(key);
+        return vendorEventCenterRepository.findAll(specification, pageable).getContent();
     }
 }
