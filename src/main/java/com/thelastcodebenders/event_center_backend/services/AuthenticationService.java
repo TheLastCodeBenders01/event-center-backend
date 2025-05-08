@@ -18,7 +18,6 @@ public class AuthenticationService {
     private final JwtService jwtService;
 
     public void signUp(UserRequest userRequest) {
-
         User user = User.builder()
                 .firstName(userRequest.getFirstName())
                 .lastName(userRequest.getLastName())
@@ -30,7 +29,6 @@ public class AuthenticationService {
     }
 
     public LoginResponse oauthLogin(String email) throws UserNotFoundException {
-
         User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
         String token = jwtService.generateToken(user);
 

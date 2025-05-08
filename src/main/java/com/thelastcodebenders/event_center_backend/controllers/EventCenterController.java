@@ -2,6 +2,8 @@ package com.thelastcodebenders.event_center_backend.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thelastcodebenders.event_center_backend.models.VendorEventCenter;
+import com.thelastcodebenders.event_center_backend.models.dto.AppResponse;
+import com.thelastcodebenders.event_center_backend.models.dto.BookEventCenterRequest;
 import com.thelastcodebenders.event_center_backend.models.dto.EventCenterRequest;
 import com.thelastcodebenders.event_center_backend.services.VendorEventCenterService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +45,11 @@ public class EventCenterController {
             @RequestParam("pageSize") int pageSize, @RequestParam("pageNumber") int pageNumber
             ) {
         return vendorEventCenterService.findAllEventCenters(pageSize, pageNumber);
+    }
+
+    @Operation(summary = "book event center", description = "endpoint for booking event center")
+    @PostMapping("book/{eventCenterId}")
+    public AppResponse bookEventCenter(@PathVariable UUID eventCenterId, @RequestBody BookEventCenterRequest request) {
+        return vendorEventCenterService.bookEventCenter(eventCenterId, request);
     }
 }

@@ -1,6 +1,7 @@
 package com.thelastcodebenders.event_center_backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,14 +31,15 @@ public class EventCenterBooking {
     private int id;
 
     private Instant bookingDate;
+    private String message;
 
     @ManyToOne
     @JoinColumn(name = "booked_by")
     @JsonIgnore
     private User bookedBy;
 
-    @ManyToOne
-    @JoinColumn(name = "event_center_id")
+    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @JoinColumn(name = "vendor_event_center_id", nullable = false)
     @JsonIgnore
     private VendorEventCenter eventCenter;
 }
