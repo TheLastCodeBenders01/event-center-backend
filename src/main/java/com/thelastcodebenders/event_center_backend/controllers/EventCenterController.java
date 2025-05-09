@@ -1,6 +1,5 @@
 package com.thelastcodebenders.event_center_backend.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.thelastcodebenders.event_center_backend.models.VendorEventCenter;
 import com.thelastcodebenders.event_center_backend.models.dto.AppResponse;
 import com.thelastcodebenders.event_center_backend.models.dto.BookEventCenterRequest;
@@ -29,7 +28,7 @@ public class EventCenterController {
 
     @Operation(summary = "upload event center (authenticated)", description = "The medias are not string they're actually supposed to be a list of files. While the address should be of the form {\"streetAddress\":\"Adegbaju\",\"country\":\"Nigeria\",\"state\":\"Lagos\"}")
     @PostMapping
-    public VendorEventCenter uploadEventCenter(@ModelAttribute EventCenterRequest request) throws JsonProcessingException {
+    public VendorEventCenter uploadEventCenter(@ModelAttribute EventCenterRequest request) {
         return vendorEventCenterService.uploadEventCenter(request);
     }
 

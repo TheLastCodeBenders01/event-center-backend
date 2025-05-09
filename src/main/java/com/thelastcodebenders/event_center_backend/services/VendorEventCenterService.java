@@ -39,22 +39,20 @@ public class VendorEventCenterService {
     private final EventCenterBookingRepository eventCenterBookingRepository;
 
     @Transactional
-    public VendorEventCenter uploadEventCenter(EventCenterRequest request) throws JsonProcessingException {
+    public VendorEventCenter uploadEventCenter(EventCenterRequest request) {
         User user = UserUtil.getLoggedInUser();
 
         if (user.isVendor()) {
             throw new UnauthorizedException("You're not a vendor");
         }
 
-        AddressRequestDto address = objectMapper.readValue(request.getAddress(), AddressRequestDto.class);
-
         VendorEventCenter eventCenter = VendorEventCenter.builder()
                 .name(request.getName())
                 .address(
                         Address.builder()
-                                .streetAddress(address.getStreetAddress())
-                                .country(address.getCountry())
-                                .state(address.getState())
+                                .streetAddress(request.getStreetAddress())
+                                .country(request.getCountry())
+                                .state(request.getState())
                                 .build()
                 )
                 .description(request.getDescription())

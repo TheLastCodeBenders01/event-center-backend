@@ -7,7 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class EventCenterRequest {
     private String name;
     private String description;
-    private String address;
+    private String streetAddress;
+    private String state;
+    private String country;
     private long amount;
     private MultipartFile[] medias;
 }
