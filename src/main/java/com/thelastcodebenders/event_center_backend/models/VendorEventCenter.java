@@ -50,7 +50,7 @@ public class VendorEventCenter {
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    @CollectionTable(name = "event_center_bookings", joinColumns = @JoinColumn(name = "vendor_event_center_id"))
 //    @Column(name = "booking")
-    @OneToMany(mappedBy = "eventCenter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "eventCenter", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<EventCenterBooking> bookings;
 
     @ManyToOne
