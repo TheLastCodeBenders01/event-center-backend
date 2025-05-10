@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -24,6 +25,9 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
     private final AuthenticationService authenticationService;
     private final UserService userService;
+
+    @Value("${spring.application.frontend-base-url}")
+    private String frontendBaseUrl;
 
     @SneakyThrows
     @Override
@@ -49,9 +53,10 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         LoginResponse loginResponse = authenticationService.oauthLogin(email);
 
-        response.setStatus(HttpServletResponse.SC_OK); // Set status code
-        response.setContentType("application/json"); // Set content type
-        response.getWriter().write("{\"token\":\"" + loginResponse.getToken() + "\"}"); // Write response body
-        response.getWriter().flush();
+        response.sendRedirect(String.format("%s/signin/?continue=%s", frontendBaseUrl, loginResponse.getToken()));
+//        response.setStatus(HttpServletResponse.SC_OK); // Set status code
+//        response.setContentType("application/json"); // Set content type
+//        response.getWriter().write("{\"token\":\"" + loginResponse.getToken() + "\"}"); // Write response body
+//        response.getWriter().flush();
     }
 }
