@@ -63,4 +63,8 @@ public class UserService {
                 .phoneNumber(user.getPhoneNumber())
                 .build();
     }
+
+    public UserResponse getUserById(UUID userId) {
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new).toDto();
+    }
 }

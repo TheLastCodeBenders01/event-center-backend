@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @ToString(exclude = {"eventCenter", "bookedBy"})
 @Data
@@ -39,8 +41,16 @@ public class EventCenterBooking {
     @JsonIgnore
     private User bookedBy;
 
+    @Transient
+    private UUID user;
+
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     @JoinColumn(name = "vendor_event_center_id", nullable = false)
     @JsonIgnore
     private VendorEventCenter eventCenter;
+
+    public EventCenterBooking toDto() {
+        this.user = bookedBy.getUserId();
+        return this;
+    }
 }

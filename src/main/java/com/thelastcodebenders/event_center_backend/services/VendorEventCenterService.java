@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -66,12 +67,13 @@ public class VendorEventCenterService {
     }
 
     public VendorEventCenter getEventCenterById(UUID eventCenterId) {
-        return vendorEventCenterRepository.findById(eventCenterId).orElseThrow(EventCenterNotFoundException::new);
+        return setEventCenterBookingsToDto(vendorEventCenterRepository.findById(eventCenterId).orElseThrow(EventCenterNotFoundException::new));
     }
 
     public List<VendorEventCenter> findAllEventCenters(int pageSize, int pageNumber) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return vendorEventCenterRepository.findAll(pageable).getContent();
+        List<VendorEventCenter> eventCenters = vendorEventCenterRepository.findAll(pageable).getContent();
+        return eventCenters.parallelStream().map(this::setEventCenterBookingsToDto).collect(Collectors.toList());
     }
 
     public AppResponse bookEventCenter(UUID eventCenterId, BookEventCenterRequest request) {
@@ -93,10 +95,17 @@ public class VendorEventCenterService {
     public List<VendorEventCenter> searchEventCenter(int pageSize, int pageNumber, String key) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<VendorEventCenter> specification = VendorEventCenterSpecification.search(key);
-        return vendorEventCenterRepository.findAll(specification, pageable).getContent();
+        List<VendorEventCenter> eventCenters = vendorEventCenterRepository.findAll(specification, pageable).getContent();
+        return eventCenters.parallelStream().map(this::setEventCenterBookingsToDto).collect(Collectors.toList());
     }
 
     public List<VendorEventCenter> getVendorEventCenters() {
-        return vendorEventCenterRepository.findAllByOwner(UserUtil.getLoggedInUser());
+        List<VendorEventCenter> eventCenters = vendorEventCenterRepository.findAllByOwner(UserUtil.getLoggedInUser());
+        return eventCenters.parallelStream().map(this::setEventCenterBookingsToDto).collect(Collectors.toList());
+    }
+
+    public VendorEventCenter setEventCenterBookingsToDto(VendorEventCenter eventCenter) {
+        eventCenter.setBookings(eventCenter.getBookings().parallelStream().map(EventCenterBooking::toDto).collect(Collectors.toList()));
+        return eventCenter;
     }
 }

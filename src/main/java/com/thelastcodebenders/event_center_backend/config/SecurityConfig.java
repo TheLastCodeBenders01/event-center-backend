@@ -56,7 +56,8 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers(
                                 HttpMethod.GET,
-                                "/event-centers/**"
+                                "/event-centers/**",
+                                "/users/by-id/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
