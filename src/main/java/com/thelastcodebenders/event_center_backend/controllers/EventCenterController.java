@@ -60,7 +60,7 @@ public class EventCenterController {
         return vendorEventCenterService.bookEventCenter(eventCenterId, request);
     }
 
-    @Operation(summary = "get event centers uploaded by vendor")
+    @Operation(summary = "get event centers uploaded by vendor (authenticated)")
     @GetMapping("me")
     public List<VendorEventCenter> getVendorEventCenters() {
         return vendorEventCenterService.getVendorEventCenters();
