@@ -59,4 +59,10 @@ public class EventCenterController {
     public AppResponse bookEventCenter(@PathVariable UUID eventCenterId, @RequestBody BookEventCenterRequest request) {
         return vendorEventCenterService.bookEventCenter(eventCenterId, request);
     }
+
+    @Operation(summary = "get event centers uploaded by vendor")
+    @GetMapping("me")
+    public List<VendorEventCenter> getVendorEventCenters() {
+        return vendorEventCenterService.getVendorEventCenters();
+    }
 }

@@ -1,7 +1,5 @@
 package com.thelastcodebenders.event_center_backend.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thelastcodebenders.event_center_backend.adapter.FileServiceAdapter;
 import com.thelastcodebenders.event_center_backend.exceptions.EventCenterNotFoundException;
 import com.thelastcodebenders.event_center_backend.exceptions.UnauthorizedException;
@@ -9,7 +7,6 @@ import com.thelastcodebenders.event_center_backend.models.EventCenterBooking;
 import com.thelastcodebenders.event_center_backend.models.User;
 import com.thelastcodebenders.event_center_backend.models.VendorEventCenter;
 import com.thelastcodebenders.event_center_backend.models.dto.Address;
-import com.thelastcodebenders.event_center_backend.models.dto.AddressRequestDto;
 import com.thelastcodebenders.event_center_backend.models.dto.AppResponse;
 import com.thelastcodebenders.event_center_backend.models.dto.BookEventCenterRequest;
 import com.thelastcodebenders.event_center_backend.models.dto.EventCenterRequest;
@@ -35,7 +32,6 @@ public class VendorEventCenterService {
 
     private final VendorEventCenterRepository vendorEventCenterRepository;
     private final FileServiceAdapter fileServiceAdapter;
-    private final ObjectMapper objectMapper;
     private final EventCenterBookingRepository eventCenterBookingRepository;
 
     @Transactional
@@ -98,5 +94,9 @@ public class VendorEventCenterService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
         Specification<VendorEventCenter> specification = VendorEventCenterSpecification.search(key);
         return vendorEventCenterRepository.findAll(specification, pageable).getContent();
+    }
+
+    public List<VendorEventCenter> getVendorEventCenters() {
+        return vendorEventCenterRepository.findAllByOwner(UserUtil.getLoggedInUser());
     }
 }
