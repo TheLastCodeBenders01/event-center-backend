@@ -106,6 +106,7 @@ public class VendorEventCenterService {
 
     public VendorEventCenter setEventCenterBookingsToDto(VendorEventCenter eventCenter) {
         eventCenter.setBookings(eventCenter.getBookings().parallelStream().map(EventCenterBooking::toDto).collect(Collectors.toList()));
+        eventCenter.toDto();
         return eventCenter;
     }
 }

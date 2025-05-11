@@ -29,13 +29,13 @@ public class EventCenterController {
     @Operation(summary = "upload event center (authenticated)", description = "The medias are not string they're actually supposed to be a list of files. While the address should be of the form {\"streetAddress\":\"Adegbaju\",\"country\":\"Nigeria\",\"state\":\"Lagos\"}")
     @PostMapping
     public VendorEventCenter uploadEventCenter(@ModelAttribute EventCenterRequest request) {
-        return vendorEventCenterService.uploadEventCenter(request);
+        return vendorEventCenterService.uploadEventCenter(request).toDto();
     }
 
     @Operation(summary = "get event center by id")
     @GetMapping("{eventCenterId}")
     public VendorEventCenter getEventCenterById(@PathVariable UUID eventCenterId) {
-        return vendorEventCenterService.getEventCenterById(eventCenterId);
+        return vendorEventCenterService.getEventCenterById(eventCenterId).toDto();
     }
 
     @Operation(summary = "(paginated endpoint) get all event centers", description = "the parameters are actually query parameters")

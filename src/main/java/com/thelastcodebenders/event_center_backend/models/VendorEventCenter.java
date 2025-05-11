@@ -14,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -57,4 +58,16 @@ public class VendorEventCenter {
     @JoinColumn(name = "owner_id")
     @JsonIgnore
     private User owner;
+
+    @Transient
+    private UUID ownerId;
+
+    @Transient
+    private String phoneNumber;
+
+    public VendorEventCenter toDto() {
+        this.ownerId = owner.getUserId();
+        this.phoneNumber = owner.getPhoneNumber();
+        return this;
+    }
 }
